@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Si David</title>
+    <!-- CSS only -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css"
+      integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX"
+      crossorigin="anonymous"
+    />
+    <style>
+      /* Paste this css to your style sheet file or under head tag */
+      /* This only works with JavaScript, 
+if it's not present, don't show loader */
+      .no-js #loader {
+        display: none;
+      }
+
+      .js #loader {
+        display: block;
+        position: absolute;
+        left: 100px;
+        top: 0;
+      }
+
+      .se-pre-con {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: url(./Preloader_1.gif) center no-repeat #fff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="se-pre-con"></div>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="#">Si-David <small>by LaraUmm</small></a>
+      <button class="btn btn-sm btn-danger ml-auto" onclick="tombolRecognize()">
+        Coba klik aja
+      </button>
+    </nav>
+    <div class="container pt-5">
+      <div class="row pt-5" id="content"></div>
+    </div>
+
+    <!-- JS, Popper.js, and jQuery -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+      integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
+      integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      var msg = new SpeechSynthesisUtterance();
+      msg.volume = 1; // From 0 to 1
+      msg.rate = 0.8; // From 0.1 to 10
+      msg.pitch = 1; // From 0 to 2
+      msg.lang = "id";
+      let url =
+        "https://services5.arcgis.com/VS6HdKS0VfIhv8Ct/arcgis/rest/services/COVID19_Indonesia_per_Provinsi/FeatureServer/0/query?where=1%3D1&outFields=Provinsi,Kasus_Posi,Kasus_Semb,Kasus_Meni&outSR=4326&f=json";
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          let el;
+          for (let i = 0; i < data.features.length; i++) {
+            let el = `
+                    <div class="col-md-4 voiceable" onClick="ngomong('${data.features[i].attributes.Provinsi}','${data.features[i].attributes.Kasus_Posi}','${data.features[i].attributes.Kasus_Semb}','${data.features[i].attributes.Kasus_Meni}')">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h5 class="card-title">Provinsi ${data.features[i].attributes.Provinsi}</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Positif ${data.features[i].attributes.Kasus_Posi}</p>
+                                <p class="card-text">Sembuh ${data.features[i].attributes.Kasus_Semb}</p>
+                                <p class="card-text">Meninggal ${data.features[i].attributes.Kasus_Meni}</p>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+            $("#content").html($("#content").html() + el);
+          }
+        });
+
+      function ngomong(prov, pos, sem, men) {
+        msg.text = `provinsi ${prov}, jumlah kasus positif ${pos}, jumlah pasien sembuh ${sem}, jumlah pasien meninggal ${men}`;
+        window.speechSynthesis.speak(msg);
+      }
+      var recognition = new webkitSpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = "id-ID";
+
+      recognition.onstart = function () {
+        recognizing = true;
+      };
+
+      recognition.onend = function () {
+        recognizing = false;
+        console.log("selesai");
+      };
+
+      recognition.onresult = function (event) {
+        var interim_transcript = "";
+        if (typeof event.results == "undefined") {
+          recognition.onend = null;
+          recognition.stop();
+          upgrade();
+          return;
+        }
+        for (var i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            final_transcript += event.results[i][0].transcript;
+          } else {
+            interim_transcript += event.results[i][0].transcript;
+          }
+        }
+        let str = "baca";
+        console.log(interim_transcript);
+        if (interim_transcript.includes(str)) {
+          dariSuara = true;
+          bacaSemua();
+          recognition.stop();
+        } else {
+          recognition.stop();
+        }
+        console.log(interim_transcript);
+      };
+
+      msg.onend = function () {
+        if (dariSuara) {
+          bacaSemua();
+        }
+      };
+      let dariSuara = false;
+      let counterBaca = 0;
+
+      function bacaSemua() {
+        const voiceable = $(".voiceable");
+        if (counterBaca >= 34) {
+          dariSuara = false;
+          counterBaca = 0;
+          return;
+        }
+        voiceable[counterBaca++].click();
+      }
+
+      function sleep(time) {
+        return new Promise((resolve) => setTimeout(resolve, time));
+      }
+
+      function tombolRecognize() {
+        msg.text =
+          "untuk membaca keseluruhan data katakan baca setelah hitungan ke 3, 1 2 3";
+        window.speechSynthesis.speak(msg);
+        sleep(7400).then(() => {
+          recognition.start();
+        });
+      }
+      $(document).ready(function () {
+        $(".se-pre-con").fadeOut("slow");
+        msg.text =
+          "Halaman siap digunakan, klik salah satu provinsi untuk membaca data";
+        window.speechSynthesis.speak(msg);
+      });
+    </script>
+  </body>
+</html>

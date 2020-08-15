@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css"
+      integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/jquery.fullpage.css" />
+    <link rel="stylesheet" href="css/loading.min.css" />
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+      .no-js #loader {
+        display: none;
+      }
+
+      .js #loader {
+        display: block;
+        position: absolute;
+        left: 100px;
+        top: 0;
+      }
+
+      .se-pre-con {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: url(./Preloader_1.gif) center no-repeat #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="se-pre-con"></div>
+    <div id="fullpage">
+      <div class="section" id="section1">
+        <div class="container h-100">
+          <div class="row pt-5 h-100 pb-5" id="content">
+            <div class="col-md-12 h-100 d-flex">
+              <button
+                class="btn-block btn btn-warning h-100 d-md-none d-lg-none d-xl-none d-block d-sm-block"
+                id="button_voice"
+              >
+                Tombol Voice
+              </button>
+              <h2
+                class="text-center my-auto d-none d-sm-none d-md-block d-lg-block d-xl-block"
+              >
+                Dengan menekan tombol SPASI, maka akan anda dapat melakukan
+                pencarian data kasus melalui suara
+              </h2>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section active">
+        <div class="container-fluid h-100">
+          <div class="row h-100">
+            <div
+              class="col-md-6 h-100 d-sm-flex d-none flex-column align-items-center justify-content-center"
+            >
+              <h3>Selamat Datang</h3>
+              <br />
+              <h1>Si - David</h1>
+            </div>
+            <div
+              class="col-md-6 h-100 d-flex align-items-center justify-content-center text-center"
+            >
+              <div class="row">
+                <div class="col-md-12">
+                  <button
+                    class="btn btn-light circle ld ld-move-fade-btt mb-5"
+                    onclick="goToTunanetra()"
+                  >
+                    <img src="images/up-chevron.svg" alt="" height="38" />
+                  </button>
+                  <p>
+                    Scroll Ke Atas <br />
+                    untuk penyandang tunanetra
+                  </p>
+                </div>
+                <div class="col-md-12 mt-5">
+                  <p>Scroll Ke Bawah <br />untuk penyandang non tunanetra</p>
+                  <button
+                    class="btn btn-light ld ld-move-fade-btt mt-5"
+                    style="animation-direction: reverse;"
+                  >
+                    <img
+                      src="images/down-chevron.svg"
+                      onclick="goToNonTunanetra()"
+                      alt=""
+                      height="38"
+                    />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="container pt-5">
+          <div class="row pt-5" id="content"></div>
+        </div>
+        <!-- <div
+          style="position: fixed; bottom: 50%; right: 20px;"
+          class="d-flex flex-column"
+        >
+          <button class="btn btn-sm mb-1" id="btn_lampu">
+            <img src="images/lamp_dark.svg" alt="" height="38" />
+          </button>
+          <button class="btn btn-sm mb-1" id="btn_font_inc">
+            <img src="images/font up.svg" alt="" height="38" />
+          </button>
+          <button class="btn btn-sm mb-1" id="btn_font_dec">
+            <img src="images/font down.svg" alt="" height="38" />
+          </button>
+          <button class="btn btn-sm mb-1" id="btn_text_width_i">
+            <img src="images/text-width-i.png" alt="" height="38" />
+          </button>
+          <button class="btn btn-sm mb-1" id="btn_text_width_d">
+            <img src="images/text-width-d.png" alt="" height="38" />
+          </button>
+        </div> -->
+      </div>
+    </div>
+    <!--  -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+      integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
+      integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J"
+      crossorigin="anonymous"
+    ></script>
+    <script src="js/jquery.fullpage.js"></script>
+    <script src="js/tunanetra.js"></script>
+    <script>
+      let dataCovid = [];
+      let idxProv = [];
+      $(document).ready(function () {
+        $("#fullpage").fullpage({});
+
+        let url =
+          "https://services5.arcgis.com/VS6HdKS0VfIhv8Ct/arcgis/rest/services/COVID19_Indonesia_per_Provinsi/FeatureServer/0/query?where=1%3D1&outFields=Provinsi,Kasus_Posi,Kasus_Semb,Kasus_Meni&outSR=4326&f=json";
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            dataCovid = data.features;
+            for (let i = 0; i < dataCovid.length; i++) {
+              idxProv.push(dataCovid[i].attributes.Provinsi);
+            }
+          })
+          .then(() => {
+            $(".se-pre-con").fadeOut("slow");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+    </script>
+  </body>
+</html>
