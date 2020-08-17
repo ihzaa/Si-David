@@ -1,4 +1,4 @@
-var msg = new SpeechSynthesisUtterance();
+let msg = new SpeechSynthesisUtterance();
 msg.volume = 1; // From 0 to 1
 msg.rate = 0.8; // From 0.1 to 10
 msg.pitch = 1; // From 0 to 2
@@ -37,14 +37,26 @@ recognition.onresult = function (event) {
   }
 };
 
-$(document).on("mousedown", "#button_voice", function () {
+// $(document).on("mousedown", "#button_voice", function () {
+//   if (!rec) {
+//     rec = true;
+//     recognition.start();
+//   }
+// });
+
+// $(document).on("mouseup", "#button_voice", function () {
+//   rec = false;
+//   recognition.stop();
+// });
+
+$(document).on("touchstart", "#button_voice", function () {
   if (!rec) {
     rec = true;
     recognition.start();
   }
 });
 
-$(document).on("mouseup", "#button_voice", function () {
+$(document).on("touchend", "#button_voice", function () {
   rec = false;
   recognition.stop();
 });
@@ -59,20 +71,49 @@ function baca(nama) {
     window.speechSynthesis.speak(msg);
   }
 }
-
+isInLanding = true;
 $(document).on("keydown", function () {
-  if (event.keyCode === 32 && $("#section1").hasClass("active")) {
+  if (
+    event.keyCode === 32 &&
+    $("#section1").hasClass("active") &&
+    !isInLanding
+  ) {
     if (!rec) {
       rec = true;
       recognition.start();
     }
   }
+  if (event.keyCode === 32 && $("#landing").hasClass("active") && isInLanding) {
+    msg.text = `Anda dialihkan ke section tunanetra, tekan dan tahan tombol spasi lalu sebutkan nama provinsi`;
+    window.speechSynthesis.speak(msg);
+    $.fn.fullpage.moveSectionUp();
+  }
+});
+
+$("#landing").on("touchend", function () {
+  if ($("#landing").hasClass("active")) {
+    isInLanding = false;
+    $.fn.fullpage.moveSectionUp();
+    msg.text = `Anda dialihkan ke section tunanetra, tekan dan tahan tombol di sekitaran tengah layar lalu sebutkan nama provinsi`;
+    window.speechSynthesis.speak(msg);
+  }
 });
 
 $(document).on("keyup", function (e) {
-  if (event.keyCode === 32 && $("#section1").hasClass("active")) {
+  if (
+    event.keyCode === 32 &&
+    $("#section1").hasClass("active") &&
+    !$("#landing").hasClass("active")
+  ) {
     rec = false;
     recognition.stop();
+  }
+  if (
+    event.keyCode === 32 &&
+    !$("#landing").hasClass("active") &&
+    isInLanding
+  ) {
+    isInLanding = false;
   }
 });
 
