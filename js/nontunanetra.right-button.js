@@ -3,11 +3,19 @@ $(document).on("click", "#btn_lampu", function () {
   let img = $("#btn_lampu").find("img")[0];
   if (dark) {
     dark = false;
+    $("body").css("color", "black");
+    // $("h2").css("color", "white");
+    // $("h3").css("color", "white");
+    // $("h4").css("color", "white");
+    // $("h5").css("color", "white");
+    // $("h6").css("color", "white");
     $(".card").removeClass("bg-dark text-light");
     $("body").removeClass("bg-dark");
     $(img).attr("src", "images/lamp_dark.svg");
   } else {
+    $("body").css("color", "white");
     dark = true;
+    $(".card").css("border-color", "white");
     $(".card").addClass("bg-dark text-light");
     $("body").addClass("bg-dark");
     $(img).attr("src", "images/lamp_light.svg");
@@ -25,6 +33,7 @@ $(document).on("click", "#btn_font_inc", function () {
     fontSize = fontSize + 15 + "px";
     $("h5").css({ "font-size": fontSize });
   }
+  $.fn.fullpage.reBuild(); 
 });
 
 $(document).on("click", "#btn_font_dec", function () {
@@ -37,6 +46,7 @@ $(document).on("click", "#btn_font_dec", function () {
     fontSize = fontSize + -15 + "px";
     $("h5").css({ "font-size": fontSize });
   }
+  $.fn.fullpage.reBuild(); 
 });
 
 let width = 1;
@@ -47,6 +57,7 @@ $(document).on("click", "#btn_text_width_i", function () {
     textWidth = textWidth + 1 + "px";
     $("body").css({ "letter-spacing": textWidth });
   }
+  $.fn.fullpage.reBuild(); 
 });
 
 $(document).on("click", "#btn_text_width_d", function () {
@@ -55,5 +66,16 @@ $(document).on("click", "#btn_text_width_d", function () {
     var textWidth = parseInt($("body").css("letter-spacing"));
     textWidth = textWidth + -1 + "px";
     $("body").css({ "letter-spacing": textWidth });
+  }
+  $.fn.fullpage.reBuild(); 
+});
+let font = true;
+$(document).on("click", "#btn_disleksia", function () {
+  if (font) {
+    font = false;
+    $("body").css("font-family", "Open-Dyslexic");
+  } else {
+    font = true;
+    $("body").css("font-family", "Sans-serif");
   }
 });

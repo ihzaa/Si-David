@@ -4,30 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css"
-      integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
-      integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-      crossorigin=""
-    />
-    <script
-      src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
-      integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-      crossorigin=""
-    ></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/leaflet.css" />
+    <script src="js/leaflet.js"></script>
     <link rel="stylesheet" href="css/jquery.fullpage.css" />
     <link rel="stylesheet" href="css/loading.min.css" />
+    <link rel="stylesheet" href="css/s.css" />
     <style>
+      @font-face {
+        font-family: Open-Dyslexic;
+        src: url(fonts/OpenDyslexic-Regular.otf);
+      }
+
+      /* .fp-responsive #section3,
+      .fp-responsive #section3 .fp-slide,
+      .fp-responsive #section3 .fp-tableCell {
+        height: auto !important;
+      } */
       html,
       body {
         height: 100%;
       }
+
       .no-js #loader {
         display: none;
       }
@@ -50,14 +48,9 @@
       }
     </style>
   </head>
+
   <body>
     <div class="se-pre-con"></div>
-    <!-- <iframe
-      src="/s.mp3"
-      allow="autoplay"
-      id="audio"
-      style="display: none;"
-    ></iframe> -->
     <div id="fullpage">
       <div class="section" id="section1">
         <div class="container h-100">
@@ -67,7 +60,7 @@
                 class="btn-block btn btn-warning h-100 d-md-none d-lg-none d-xl-none d-block d-sm-block"
                 id="button_voice"
               >
-                Tombol Voice
+                Tahan layar, lalu ucapkan nama provinsi yang anda cari
               </button>
               <h2
                 class="text-center my-auto d-none d-sm-none d-md-block d-lg-block d-xl-block"
@@ -100,13 +93,18 @@
                 <div
                   class="col-md-12 d-xl-none d-lg-none d-md-none d-sm-block d-block"
                 >
-                  <button
+                  <!-- <button
                     class="btn btn-light circle ld ld-move-fade-btt mb-5"
                     onclick="atas()"
                     id="btn_atas"
-                  >
-                    <img src="images/up-chevron.svg" alt="" height="38" />
-                  </button>
+                  > -->
+                  <img
+                    src="images/up-chevron.svg"
+                    class="ld ld-move-fade-btt mb-5"
+                    alt=""
+                    height="38"
+                  />
+                  <!-- </button> -->
                   <p>
                     Tekan di bagian layar mana saja<br />
                     untuk penyandang tunanetra
@@ -115,13 +113,18 @@
                 <div
                   class="col-md-12 d-xl-block d-lg-block d-md-block d-sm-none d-none"
                 >
-                  <button
+                  <!-- <button
                     class="btn btn-light circle ld ld-move-fade-btt mb-5"
                     onclick="atas()"
                     id="btn_atas"
-                  >
-                    <img src="images/up-chevron.svg" alt="" height="38" />
-                  </button>
+                  > -->
+                  <img
+                    src="images/up-chevron.svg"
+                    class="ld ld-move-fade-btt mb-5"
+                    alt=""
+                    height="38"
+                  />
+                  <!-- </button> -->
                   <p>
                     Tekan Tombol Space<br />
                     untuk penyandang tunanetra
@@ -129,31 +132,32 @@
                 </div>
                 <div class="col-md-12 mt-5">
                   <p>Scroll Ke Bawah <br />untuk penyandang non tunanetra</p>
-                  <button
+                  <!-- <button
                     class="btn btn-light ld ld-move-fade-btt mt-5"
                     style="animation-direction: reverse;"
-                  >
-                    <img
-                      src="images/down-chevron.svg"
-                      onclick=""
-                      alt=""
-                      height="38"
-                    />
-                  </button>
+                  > -->
+                  <img
+                    class="ld ld-move-fade-btt mt-5"
+                    src="images/down-chevron.svg"
+                    alt=""
+                    height="38"
+                    style="animation-direction: reverse;"
+                  />
+                  <!-- </button> -->
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="section" id="section3">
+      <div class="section fp-responsive-auto-height" id="section3">
         <div class="container-fluid h-100">
           <div class="row d-flex">
             <nav
-              class="navbar navbar-expand-md navbar-dark bg-dark w-100"
+              class="navbar navbar-expand-md navbar-dark bg-secondary w-100"
               id="nav_non"
             >
-              <button class="btn">home</button>
+              <!-- <button class="btn">home</button> -->
               <button class="navbar-brand btn btn-home ml-auto">
                 Si-David <small>by LaraUmm</small>
               </button>
@@ -169,6 +173,7 @@
                   type="text"
                   class="form-control"
                   placeholder="Cari Nama Provinsi"
+                  onkeyup="cari(this)"
                 />
                 <div class="input-group-append">
                   <span
@@ -182,75 +187,163 @@
           </div>
           <div class="row d-flex mt-4 text-center">
             <nav
-              class="navbar navbar-expand-md navbar-dark bg-dark w-100 text-light text-center"
+              class="navbar navbar-expand-md navbar-dark bg-secondary w-100 text-light text-center"
             >
               <h3 class="mx-auto">Kasus Per Provinsi</h3>
             </nav>
           </div>
-          <div class="row d-flex mt-4 text-center">
-            <div class="col-md-3"></div>
-            <div class="col-md-3"></div>
-            <div class="col-md-3"></div>
-          </div>
+          <div
+            class="row d-flex mt-4 text-center"
+            id="content_non_tunanetra"
+          ></div>
           <div class="row d-flex mt-4 text-center">
             <nav
-              class="navbar navbar-expand-md navbar-dark bg-dark w-100 text-light text-center"
+              class="navbar navbar-expand-md navbar-dark bg-secondary w-100 text-light text-center"
             >
               <h3 class="mx-auto">Peta Sebaran</h3>
             </nav>
           </div>
           <div class="row d-flex mt-4 text-center">
             <div class="col-md-12">
-              <div id="mapid" style="height: 180px;"></div>
+              <div id="mapid" style="height: 400px;"></div>
             </div>
           </div>
+          <div class="row mt-3" id="data_nasional"></div>
         </div>
-        <!-- <div
-          style="position: fixed; bottom: 50%; right: 20px;"
-          class="d-flex flex-column"
-        >
-          <button class="btn btn-sm mb-1" id="btn_lampu">
-            <img src="images/lamp_dark.svg" alt="" height="38" />
-          </button>
-          <button class="btn btn-sm mb-1" id="btn_font_inc">
-            <img src="images/font up.svg" alt="" height="38" />
-          </button>
-          <button class="btn btn-sm mb-1" id="btn_font_dec">
-            <img src="images/font down.svg" alt="" height="38" />
-          </button>
-          <button class="btn btn-sm mb-1" id="btn_text_width_i">
-            <img src="images/text-width-i.png" alt="" height="38" />
-          </button>
-          <button class="btn btn-sm mb-1" id="btn_text_width_d">
-            <img src="images/text-width-d.png" alt="" height="38" />
-          </button>
-        </div> -->
       </div>
     </div>
-    <!--  -->
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-      integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
-      integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J"
-      crossorigin="anonymous"
-    ></script>
+    <!-- <div style="position: relative;">
+    <div class="fixed-action-btn">
+      <a class="btn-floating btn-large red">
+        <i class="large material-icons">V</i>
+      </a>
+      <ul>
+        <li>
+          <a class="btn-floating" id="btn_lampu"><img src="images/lamp_dark.svg" alt="" height="38" /></a>
+        </li>
+        <li>
+          <a class="btn-floating" id="btn_font_inc"><img src="images/font up.svg" alt="" height="38" /></a>
+          <a class="btn-floating" id="btn_font_dec"><img src="images/font down.svg" alt="" height="38" /></a>
+        </li>
+        <li>
+          <a class="btn-floating" id="btn_text_width_i"><img src="images/text-width-i.png" alt="" height="38" /></a>
+          <a class="btn-floating green" id="btn_text_width_d"><img src="images/text-width-d.png" alt=""
+              height="38" /></a>
+        </li>
+        <li>
+          <a class="btn-floating" id="btn_disleksia">
+          <h4 style="font-family: Open-Dyslexic !important;">Df</h4></a>
+        </li>
+      </ul>
+    </div>
+  </div> -->
+    <div class="backdrop"></div>
+
+    <div class="fab child" data-subitem="4">
+      <div class="row">
+        <!-- <div class="col-6"> -->
+        <img
+          src="images/font up.svg"
+          id="btn_font_inc"
+          alt=""
+          height="38"
+          class="mr-2"
+        />
+        <!-- </div> -->
+        <!-- <div class="col-6"> -->
+        <img
+          src="images/font down.svg"
+          alt=""
+          height="38"
+          id="btn_font_dec"
+          class="ml-2"
+        />
+        <!-- </div> -->
+      </div>
+    </div>
+    <div class="fab child" data-subitem="3">
+      <div class="row">
+        <!-- <div class="col-6"> -->
+        <img
+          src="images/text-width-i.png"
+          id="btn_text_width_i"
+          alt=""
+          height="38"
+          class="mr-4"
+        />
+        <!-- </div> -->
+
+        <!-- <div class="col-6"> -->
+        <img
+          src="images/text-width-d.png"
+          id="btn_text_width_d"
+          alt=""
+          height="38"
+          class="ml-2"
+        />
+        <!-- </div> -->
+      </div>
+    </div>
+    <div class="fab child" data-subitem="2">
+      <h4
+        class="mb-0"
+        style="
+          font-family: Open-Dyslexic !important;
+          font-size: 44px !important;
+          color: black;
+          letter-spacing: normal !important;
+        "
+        id="btn_disleksia"
+      >
+        Df
+      </h4>
+    </div>
+    <div class="fab child" data-subitem="1">
+      <img src="images/lamp_dark.svg" id="btn_lampu" alt="" height="38" />
+    </div>
+    <!-- <div class="fab child" data-subitem="5"><span>A</span></div> -->
+    <div
+      class="fab"
+      id="masterfab"
+      style="font-size: 50px !important; letter-spacing: normal !important;"
+    >
+      +
+    </div>
+
+    <!-- JS -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.fullpage.js"></script>
+    <script src="js/scrolloverflow.min.js"></script>
     <script src="js/tunanetra.js"></script>
+    <script src="js/nontunanetra.right-button.js"></script>
+    <script src="js/cari.js"></script>
     <script>
       let dataCovid = [];
       let idxProv = [];
+      let total = {
+        pos: 0,
+        sem: 0,
+        men: 0,
+      };
+      let el_col_prov = "";
       $(document).ready(function () {
+        // $(".fixed-action-btn").floatingActionButton();
+        // var elems = document.querySelectorAll(".fixed-action-btn");
+        // var instances = M.FloatingActionButton.init(elems, {
+        //   direction: "top",
+        //   hoverEnabled: false,
+        // });
+        var marker = L.icon({
+          iconUrl: "images/dot.svg",
+          iconSize: [22, 22], // size of the icon
+          // shadowSize: [50, 64], // size of the shadow
+          // iconAnchor: [22, 22], // point of the icon which will correspond to marker's location
+          // shadowAnchor: [4, 62], // the same for the shadow
+          // popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
+        });
         document.getElementById("landing").focus();
-        $("#fullpage").fullpage({});
         let url =
           "https://services5.arcgis.com/VS6HdKS0VfIhv8Ct/arcgis/rest/services/COVID19_Indonesia_per_Provinsi/FeatureServer/0/query?where=1%3D1&outFields=Provinsi,Kasus_Posi,Kasus_Semb,Kasus_Meni&outSR=4326&f=json";
         fetch(url)
@@ -258,10 +351,66 @@
           .then((data) => {
             dataCovid = data.features;
             for (let i = 0; i < dataCovid.length; i++) {
+              if (i == dataCovid.length - 1) {
+                break;
+              }
               idxProv.push(dataCovid[i].attributes.Provinsi);
+              total.pos += data.features[i].attributes.Kasus_Posi;
+              total.sem += data.features[i].attributes.Kasus_Semb;
+              total.men += data.features[i].attributes.Kasus_Meni;
+              $("#content_non_tunanetra").append(`
+                    <div class="col-md-4 kolom_prov">
+                        <div class="card mb-3 bg-secondary">
+                            <div class="card-body">
+                              <h5 class="card-title">Provinsi <span class="nama_prov"> ${data.features[i].attributes.Provinsi} </span></h5>
+                                <p class="card-text">Positif ${data.features[i].attributes.Kasus_Posi}</p>
+                                <p class="card-text">Sembuh ${data.features[i].attributes.Kasus_Semb}</p>
+                                <p class="card-text">Meninggal ${data.features[i].attributes.Kasus_Meni}</p>
+                            </div>
+                        </div>
+                    </div>`);
+              L.marker(
+                [data.features[i].geometry.y, data.features[i].geometry.x],
+                {
+                  title: data.features[i].attributes.Provinsi,
+                  icon: marker,
+                }
+              )
+                .bindPopup(data.features[i].attributes.Provinsi)
+                .addTo(mymap);
             }
           })
           .then(() => {
+            el_col_prov = $(".kolom_prov");
+            $("#data_nasional").append(`
+                <div class="col-md-4 voiceable">
+                        <div class="card mb-3 bg-secondary">
+                            <div class="card-body">
+                              <h5 class="card-title">${total.pos}</h5>
+                              <h5 class="card-title">Kasus Positif</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 voiceable">
+                        <div class="card mb-3 bg-secondary">
+                            <div class="card-body">
+                              <h5 class="card-title">${total.sem}</h5>
+                              <h5 class="card-title">Pasien Sembuh</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 voiceable">
+                        <div class="card mb-3 bg-secondary">
+                            <div class="card-body">
+                              <h5 class="card-title">${total.men}</h5>
+                              <h5 class="card-title">Kasus Meninggal</h5>
+                              </div>
+                        </div>
+                    </div>
+                    `);
+            $("#fullpage").fullpage({
+              scrollOverflow: true,
+            });
             $(".se-pre-con").fadeOut("slow");
           })
           .catch((err) => {
@@ -269,7 +418,7 @@
           });
       });
 
-      var mymap = L.map("mapid").setView([51.505, -0.09], 13);
+      var mymap = L.map("mapid").setView([-2.546, 118.016], 5);
 
       L.tileLayer(
         "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
@@ -284,6 +433,46 @@
           zoomOffset: -1,
         }
       ).addTo(mymap);
+
+      // sass
+      $(function () {
+        $("#masterfab,.backdrop").click(function () {
+          if ($(".backdrop").is(":visible")) {
+            $(".backdrop").fadeOut();
+            $(".fab.child")
+              .stop()
+              .animate(
+                {
+                  bottom: $("#masterfab").css("bottom"),
+                  opacity: 0,
+                },
+                125,
+                function () {
+                  $(this).hide();
+                }
+              );
+          } else {
+            $(".backdrop").fadeIn();
+            $(".fab.child").each(function () {
+              $(this)
+                .stop()
+                .show()
+                .animate(
+                  {
+                    bottom:
+                      parseInt($("#masterfab").css("bottom")) +
+                      parseInt($("#masterfab").outerHeight()) +
+                      70 * $(this).data("subitem") -
+                      $(".fab.child").outerHeight() +
+                      "px",
+                    opacity: 1,
+                  },
+                  125
+                );
+            });
+          }
+        });
+      });
     </script>
   </body>
 </html>
