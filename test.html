@@ -98,17 +98,18 @@
                     onclick="atas()"
                     id="btn_atas"
                   > -->
-                  <img
-                    src="images/up-chevron.svg"
-                    class="ld ld-move-fade-btt mb-5"
-                    alt=""
-                    height="38"
-                  />
+                  <img src="images/click.gif" alt="" height="70" class="mb-2"/>
                   <!-- </button> -->
                   <p>
                     Tekan di bagian layar mana saja<br />
                     untuk penyandang tunanetra
                   </p>
+                </div>
+                <div
+                  class="col-md-12 d-xl-none d-lg-none d-md-none d-sm-block d-block mt-4"
+                >
+                  <h3>Selamat Datang</h3>
+                  <h1>Si - David</h1>
                 </div>
                 <div
                   class="col-md-12 d-xl-block d-lg-block d-md-block d-sm-none d-none"
@@ -118,12 +119,7 @@
                     onclick="atas()"
                     id="btn_atas"
                   > -->
-                  <img
-                    src="images/up-chevron.svg"
-                    class="ld ld-move-fade-btt mb-5"
-                    alt=""
-                    height="38"
-                  />
+                  <img src="images/click.gif" alt="" height="70" />
                   <!-- </button> -->
                   <p>
                     Tekan Tombol Space<br />
@@ -247,7 +243,7 @@
           id="btn_font_inc"
           alt=""
           height="38"
-          class="mr-2"
+          class="mr-2 clickable"
         />
         <!-- </div> -->
         <!-- <div class="col-6"> -->
@@ -256,7 +252,7 @@
           alt=""
           height="38"
           id="btn_font_dec"
-          class="ml-2"
+          class="ml-2 clickable"
         />
         <!-- </div> -->
       </div>
@@ -269,7 +265,7 @@
           id="btn_text_width_i"
           alt=""
           height="38"
-          class="mr-4"
+          class="mr-4 clickable"
         />
         <!-- </div> -->
 
@@ -279,14 +275,14 @@
           id="btn_text_width_d"
           alt=""
           height="38"
-          class="ml-2"
+          class="ml-2 clickable"
         />
         <!-- </div> -->
       </div>
     </div>
     <div class="fab child" data-subitem="2">
       <h4
-        class="mb-0"
+        class="mb-0 clickable"
         style="
           font-family: Open-Dyslexic !important;
           font-size: 44px !important;
@@ -299,7 +295,13 @@
       </h4>
     </div>
     <div class="fab child" data-subitem="1">
-      <img src="images/lamp_dark.svg" id="btn_lampu" alt="" height="38" />
+      <img
+        src="images/lamp_dark.svg"
+        id="btn_lampu"
+        alt=""
+        height="38"
+        class="clickable"
+      />
     </div>
     <!-- <div class="fab child" data-subitem="5"><span>A</span></div> -->
     <div
@@ -383,24 +385,24 @@
           .then(() => {
             el_col_prov = $(".kolom_prov");
             $("#data_nasional").append(`
-                <div class="col-md-4 voiceable">
-                        <div class="card mb-3 bg-secondary">
+                <div class="col-md-4">
+                        <div class="card mb-3 bg-secondary text-center">
                             <div class="card-body">
                               <h5 class="card-title">${total.pos}</h5>
                               <h5 class="card-title">Kasus Positif</h5>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 voiceable">
-                        <div class="card mb-3 bg-secondary">
+                    <div class="col-md-4">
+                        <div class="card mb-3 bg-secondary text-center">
                             <div class="card-body">
                               <h5 class="card-title">${total.sem}</h5>
                               <h5 class="card-title">Pasien Sembuh</h5>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 voiceable">
-                        <div class="card mb-3 bg-secondary">
+                    <div class="col-md-4">
+                        <div class="card mb-3 bg-secondary text-center">
                             <div class="card-body">
                               <h5 class="card-title">${total.men}</h5>
                               <h5 class="card-title">Kasus Meninggal</h5>
@@ -451,6 +453,7 @@
                   $(this).hide();
                 }
               );
+            $.fn.fullpage.reBuild();
           } else {
             $(".backdrop").fadeIn();
             $(".fab.child").each(function () {
@@ -470,6 +473,7 @@
                   125
                 );
             });
+            $.fn.fullpage.reBuild();
           }
         });
       });
