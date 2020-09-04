@@ -4,15 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <!-- CSS only -->
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css"
-      integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX"
-      crossorigin="anonymous"
-    />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/leaflet.css" />
     <link rel="stylesheet" href="css/loading.min.css" />
     <style>
+      @font-face {
+        font-family: Open-Dyslexic;
+        src: url(fonts/OpenDyslexic-Regular.otf);
+      }
       html,
       body {
         height: 100%;
@@ -20,14 +19,12 @@
       .no-js #loader {
         display: none;
       }
-
       .js #loader {
         display: block;
         position: absolute;
         left: 100px;
         top: 0;
       }
-
       .se-pre-con {
         position: fixed;
         left: 0px;
@@ -38,55 +35,260 @@
         background: url(./Preloader_1.gif) center no-repeat #fff;
       }
     </style>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/leaflet.js"></script>
   </head>
   <body>
     <div class="se-pre-con"></div>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-      integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
-      integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J"
-      crossorigin="anonymous"
-    ></script>
+    <div id="content" class="h-100"></div>
+
     <script>
-      var msg = new SpeechSynthesisUtterance();
+      let dataCovid = [];
+      let idxProv = [];
+      let total = {
+        pos: 0,
+        sem: 0,
+        men: 0,
+      };
+      // let el_col_prov = "";
+      let cards_prov = "";
+      let card_total = "";
+      $(document).ready(function () {
+        let url =
+          "https://services5.arcgis.com/VS6HdKS0VfIhv8Ct/arcgis/rest/services/COVID19_Indonesia_per_Provinsi/FeatureServer/0/query?where=1%3D1&outFields=Provinsi,Kasus_Posi,Kasus_Semb,Kasus_Meni&outSR=4326&f=json";
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            dataCovid = data.features;
+            for (let i = 0; i < dataCovid.length; i++) {
+              if (i == dataCovid.length - 1) {
+                break;
+              }
+              idxProv.push(dataCovid[i].attributes.Provinsi);
+              total.pos += data.features[i].attributes.Kasus_Posi;
+              total.sem += data.features[i].attributes.Kasus_Semb;
+              total.men += data.features[i].attributes.Kasus_Meni;
+              cards_prov += `
+                    <div class="col-md-4 kolom_prov">
+                        <div class="card mb-3 bg-secondary">
+                            <div class="card-body">
+                              <h5 class="card-title">Provinsi <span class="nama_prov"> ${data.features[i].attributes.Provinsi} </span></h5>
+                                <p class="card-text">Positif ${data.features[i].attributes.Kasus_Posi}</p>
+                                <p class="card-text">Sembuh ${data.features[i].attributes.Kasus_Semb}</p>
+                                <p class="card-text">Meninggal ${data.features[i].attributes.Kasus_Meni}</p>
+                            </div>
+                        </div>
+                    </div>`;
+              // L.marker(
+              //   [data.features[i].geometry.y, data.features[i].geometry.x],
+              //   {
+              //     title: data.features[i].attributes.Provinsi,
+              //     icon: marker,
+              //   }
+              // )
+              //   .bindPopup(data.features[i].attributes.Provinsi)
+              //   .addTo(mymap);
+            }
+          })
+          .then(() => {
+            card_total += `<div class="col-md-4">
+                          <div class="card mb-3 bg-secondary text-center">
+                              <div class="card-body">
+                                <h5 class="card-title">${total.pos}</h5>
+                                <h5 class="card-title">Kasus Positif</h5>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-4">
+                          <div class="card mb-3 bg-secondary text-center">
+                              <div class="card-body">
+                                <h5 class="card-title">${total.sem}</h5>
+                                <h5 class="card-title">Pasien Sembuh</h5>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-4">
+                          <div class="card mb-3 bg-secondary text-center">
+                              <div class="card-body">
+                                <h5 class="card-title">${total.men}</h5>
+                                <h5 class="card-title">Kasus Meninggal</h5>
+                                </div>
+                          </div>
+                      </div>
+                      `;
+
+            fetch("pages/landing2.html")
+              .then((response) => response.text())
+              .then((data) => {
+                $("#content").html(data);
+                $(".se-pre-con").fadeOut("slow");
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          });
+      });
+
+      function toTunanetra() {
+        $(".se-pre-con").fadeIn("fast");
+        msg.text = `Anda dialihkan ke section tunanetra, tekan dan tahan tombol di sekitaran tengah layar lalu sebutkan nama provinsi`;
+        window.speechSynthesis.speak(msg);
+        fetch("pages/tunanetra2.html")
+          .then((response) => response.text())
+          .then((data) => {
+            $("#content").html(data);
+            $(".se-pre-con").fadeOut("slow");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+
+      function toNonTunanetra() {
+        $(".se-pre-con").fadeIn("fast");
+        fetch("pages/nontunanetra2.html")
+          .then((response) => response.text())
+          .then((data) => {
+            $("#content").html(data);
+            var mymap = L.map("mapid").setView([-2.546, 118.016], 5);
+            L.tileLayer(
+              "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
+              {
+                maxZoom: 18,
+                attribution:
+                  'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+                  '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                  'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                id: "mapbox/streets-v11",
+                tileSize: 512,
+                zoomOffset: -1,
+              }
+            ).addTo(mymap);
+            for (let i = 0; i < dataCovid.length; i++) {
+              if (i == dataCovid.length - 1) {
+                break;
+              }
+              L.marker([dataCovid[i].geometry.y, dataCovid[i].geometry.x], {
+                title: dataCovid[i].attributes.Provinsi,
+                icon: marker,
+              })
+                .bindPopup(dataCovid[i].attributes.Provinsi)
+                .addTo(mymap);
+            }
+            $("#content_non_tunanetra").append(cards_prov);
+            $("#data_nasional").append(card_total);
+            $(".se-pre-con").fadeOut("slow");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      var marker = L.icon({
+        iconUrl: "images/dot.svg",
+        iconSize: [22, 22],
+      });
+
+      // Tunanetra start
+      let msg = new SpeechSynthesisUtterance();
       msg.volume = 1; // From 0 to 1
       msg.rate = 0.8; // From 0.1 to 10
       msg.pitch = 1; // From 0 to 2
       msg.lang = "id";
-      let isInLan = true;
-      let dataCovid = [];
-      let idxProv = [];
+
+      $(document).on("touchend", function () {
+        toTunanetra();
+        $(document).off("keydown");
+        $(document).off("touchend");
+        document.removeEventListener(
+          "touchmove",
+          findScrollDirectionOtherBrowsers
+        ); // for mobile
+        document.removeEventListener("wheel", findScrollDirectionOtherBrowsers);
+      });
+      $(document).on("keydown", function () {
+        if (event.keyCode === 32) {
+          toTunanetra();
+          $(document).off("touchend");
+          $(document).off("keydown");
+          document.removeEventListener(
+            "touchmove",
+            findScrollDirectionOtherBrowsers
+          ); // for mobile
+          document.removeEventListener(
+            "wheel",
+            findScrollDirectionOtherBrowsers
+          );
+        }
+      });
+      // Tunanetra end
+
+      // NonTunanerta start
       function findScrollDirectionOtherBrowsers(event) {
-        if (isInLan) {
-          isInLan = false;
-          var delta;
-          if (event.wheelDelta) {
-            delta = event.wheelDelta;
-          } else {
-            delta = -1 * event.deltaY;
-          }
-          if (delta < 0) {
-            goToNonTunanetra();
-          } else if (delta > 0) {
-            goToTunanetra();
-          }
+        var delta;
+        if (event.wheelDelta) {
+          delta = event.wheelDelta;
+        } else {
+          delta = -1 * event.deltaY;
+        }
+        if (delta < 0) {
+          toNonTunanetra();
+          $(document).off("touchend");
+          $(document).off("keydown");
+          document.removeEventListener(
+            "touchmove",
+            findScrollDirectionOtherBrowsers
+          ); // for mobile
+          document.removeEventListener(
+            "wheel",
+            findScrollDirectionOtherBrowsers
+          );
         }
       }
-      $(document).on("touchmove", findScrollDirectionOtherBrowsers); // for mobile
-      $(document).on("scroll", findScrollDirectionOtherBrowsers);
-      // document.addEventListener("wheel", findScrollDirectionOtherBrowsers);
+      document.addEventListener("touchmove", findScrollDirectionOtherBrowsers); // for mobile
+      document.addEventListener("wheel", findScrollDirectionOtherBrowsers);
+      // NonTUnanetra end
+
+      (function () {
+        var k = function (action) {
+          var eventObj = document.createEvent("Events");
+
+          eventObj.initEvent("keydown", true, true);
+          eventObj.keyCode = 75;
+          eventObj.which = 75;
+
+          document.body.dispatchEvent(eventObj);
+        };
+
+        var killSpaceBar = function (evt) {
+          var target = evt.target || {},
+            isInput =
+              "INPUT" == target.tagName ||
+              "TEXTAREA" == target.tagName ||
+              "SELECT" == target.tagName ||
+              "EMBED" == target.tagName;
+
+          // if we’re an input or not a real target exit
+          if (isInput || !target.tagName) return;
+
+          // if we’re a fake input like the comments exit
+          if (
+            target &&
+            target.getAttribute &&
+            target.getAttribute("role") === "textbox"
+          )
+            return;
+
+          // ignore the space and send a ‘k’ to pause
+          if (evt.keyCode === 32) {
+            evt.preventDefault();
+            k();
+          }
+        };
+
+        document.addEventListener("keydown", killSpaceBar, false);
+      })();
     </script>
-    <script src="js/api.js"></script>
-    <script src="js/nontunanetra.right-button.js"></script>
-    <script src="js/tunanetra.js"></script>
   </body>
 </html>
