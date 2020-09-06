@@ -32,6 +32,9 @@ $(document).on("click", "#btn_font_inc", function () {
     var fontSize = parseInt($("h5").css("font-size"));
     fontSize = fontSize + 15 + "px";
     $("h5").css({ "font-size": fontSize });
+    var fontSize = parseInt($(".leaflet-popup-content").css("font-size"));
+    fontSize = fontSize + 10 + "px";
+    $(".leaflet-popup-content").css({ "font-size": fontSize });
   }
   // $.fn.fullpage.reBuild();
 });
@@ -45,6 +48,9 @@ $(document).on("click", "#btn_font_dec", function () {
     var fontSize = parseInt($("h5").css("font-size"));
     fontSize = fontSize + -15 + "px";
     $("h5").css({ "font-size": fontSize });
+    var fontSize = parseInt($(".leaflet-popup-content").css("font-size"));
+    fontSize = fontSize + -10 + "px";
+    $(".leaflet-popup-content").css({ "font-size": fontSize });
   }
   // $.fn.fullpage.reBuild();
 });
@@ -74,9 +80,11 @@ $(document).on("click", "#btn_disleksia", function () {
   if (font) {
     font = false;
     $("body").css("font-family", "Open-Dyslexic");
+    $("#mapid").css("font-family", "Open-Dyslexic");
   } else {
     font = true;
     $("body").css("font-family", "Sans-serif");
+    $("#mapid").css("font-family", "Sans-serif");
   }
 });
 
@@ -119,4 +127,24 @@ $(function () {
       // $.fn.fullpage.reBuild();
     }
   });
+});
+
+let saturasi = 1;
+$(document).on("click", "#btn_saturasi", function () {
+  let img = $("#btn_saturasi");
+  if (saturasi == 1) {
+    saturasi = 2;
+    $("html").css("filter", "grayscale(100%)");
+    $(img).attr("src", "images/invert-colors.svg");
+  } else if (saturasi == 2) {
+    $("html").css("filter", "grayscale(0%)");
+    $("html").css("filter", "invert(100%)");
+    $(img).attr("src", "images/invert.svg");
+    saturasi = 3;
+  } else {
+    $("html").css("filter", "invert(0%)");
+    $("html").css("filter", "grayscale(0%)");
+    $(img).attr("src", "images/saturasi.png");
+    saturasi = 1;
+  }
 });
